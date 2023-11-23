@@ -7,31 +7,28 @@ const fullNameSchema = new Schema<TFullName>({
 })
 
 const addressSchema = new Schema<TAddress>({
-    street: {type: String},
-    city: {type: String},
-    country: {type: String}
+    street: {type: String, required: [true, 'street is required']},
+    city: {type: String, required: [true, 'city is required']},
+    country: {type: String, required: [true, 'country is required']}
 })
 
 
 const userSchema = new Schema<TUser>({
-    userId: {type: Number},
-    username: {type: String, required: [true, 'username is required']},
+    userId: {type: Number, unique: true},
+    username: {type: String, unique: true, required: [true, 'username is required']},
     password: {type: String, required: [true, 'password is required']},
     fullName: {
         type: fullNameSchema,
-        required: [true, 'FullName is required'],
-        trim: true
+        required: [true, 'FullName is required']
     },
-    age: {type: Number},
+    age: {type: Number, required: [true, 'age is required']},
     email: {
         type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-        trim: true,
+        required: [true, 'Email is required']
     },
     isActive: {type: Boolean},
     hobbies: [{ type: String }, { type: String }],
-    address: {type: addressSchema, required: [true, 'FullName is required']}
+    address: {type: addressSchema,  required: [true, 'Address is required']}
 })
 
 
