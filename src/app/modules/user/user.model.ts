@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TAddress, TFullName, TUser } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const fullNameSchema = new Schema<TFullName>({
     firstName: {type: String, required: [true, 'firstName is required']},
@@ -30,6 +32,32 @@ const userSchema = new Schema<TUser>({
     hobbies: [{ type: String }, { type: String }],
     address: {type: addressSchema,  required: [true, 'Address is required']}
 })
+
+// //creating a custom static method
+// userSchema.statics.getUser = async function (userId: string) {
+//     const gettingUser = await User.findOne({ userId: userId });
+//     return gettingUser;
+//   };
+
+
+//pre save middleware/ hook: will work on create(), save()
+userSchema.pre('save', async function (next) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const user = this; //doc
+
+    //hashing password and save into DB
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+    next();
+  });
+  
+  //post save middleware/ hook
+//   userSchema.post('save', function (doc, next) {
+//     doc.password = '';
+//     next();
+//   });
 
 
 //creating model

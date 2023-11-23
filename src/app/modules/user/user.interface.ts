@@ -21,3 +21,9 @@ export type TUser = {
     hobbies: [string, string];
     address: TAddress;
 }
+
+
+// //static
+// export interface UserModel extends Model<TUser> {
+//     getUser(userId: number): Promise<TUser | null>
+//   }

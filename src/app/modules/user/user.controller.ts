@@ -51,7 +51,7 @@ const getAllUsers = async(req : Request, res : Response) =>{
 const getSingleUser = async(req: Request, res: Response) =>{
     try {
         const id = req.params.userId
-        const result = await userServices.getSingUserFromDb(id)
+        const result = await userServices.getSingleUserFromDb(id)
         res.status(200).json({
             success: true,
             message: "student is retrieved successfully",
