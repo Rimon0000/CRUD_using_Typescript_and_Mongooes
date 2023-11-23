@@ -14,16 +14,21 @@ const getAllUsersFromDb = async () => {
     return result;
   };
 
-//get single student
+//get single user
 const getSingleUserFromDb = async (userId: number) => {
     const result = await User.findOne({userId})
     return result;
   };
 
-  //delete single student
+  //delete single user
 const deleteSingleUserFromDb = async (userId: number) => {
   const result = await User.deleteOne({userId})
-  console.log(result);
+  return result;
+};
+
+ //update single user
+const updateSingleUserFromDb = async (userId: number, userData: any) => {
+  const result = await User.updateOne({userId}, userData)
   return result;
 };
 
@@ -33,4 +38,5 @@ const deleteSingleUserFromDb = async (userId: number) => {
     getAllUsersFromDb,
     getSingleUserFromDb,
     deleteSingleUserFromDb,
+    updateSingleUserFromDb
   }

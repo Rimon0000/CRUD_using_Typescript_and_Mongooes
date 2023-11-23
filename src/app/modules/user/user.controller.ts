@@ -93,6 +93,34 @@ const deleteSingleUser = async(req: Request, res: Response) =>{
     }
 }
 
+//update
+const updateSingleUser = async (req: Request, res: Response) => {
+  try {
+    const {user: userData} = req.body;
+
+    //data validation using zod
+    const zodParseData = UserValidationSchema.parse(userData)
+
+    const userId = zodParseData.userId
+
+    const result = await userServices.updateSingleUserFromDb(userId, zodParseData);
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    });
+  }
+  
+};
 
 
 export const userControllers = {
@@ -100,4 +128,5 @@ export const userControllers = {
   getAllUsers,
   getSingleUser,
   deleteSingleUser,
+  updateSingleUser
 };
