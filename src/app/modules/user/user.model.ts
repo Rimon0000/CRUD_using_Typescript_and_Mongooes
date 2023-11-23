@@ -50,14 +50,13 @@ userSchema.pre('save', async function (next) {
       user.password,
       Number(config.bcrypt_salt_rounds),
     );
+    //remove password
+    user.$set('password', undefined);
     next();
+    
   });
   
-  //post save middleware/ hook
-//   userSchema.post('save', function (doc, next) {
-//     doc.password = '';
-//     next();
-//   });
+
 
 
 //creating model
