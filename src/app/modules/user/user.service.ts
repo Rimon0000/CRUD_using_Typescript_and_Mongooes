@@ -8,15 +8,22 @@ const createUserIntoDb = async (userData: TUser) => {
     return result;
   };
 
-  //get all user
+//get all user
 const getAllUsersFromDb = async () => {
     const result = await User.find();
     return result;
   };
 
+//get single student
+const getSingUserFromDb = async (userId: number) => {
+    const result = await User.findOne({userId})
+    return result;
+  };
+
   export const userServices = {
     createUserIntoDb,
-    getAllUsersFromDb
+    getAllUsersFromDb,
+    getSingUserFromDb
 
     
   }
