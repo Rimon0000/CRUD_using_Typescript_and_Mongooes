@@ -22,7 +22,8 @@ const getSingleUserFromDb = async (userId: number) => {
 
   //delete single student
 const deleteSingleUserFromDb = async (userId: number) => {
-  const result = await User.updateOne({userId})
+  const result = await User.deleteOne({userId})
+  console.log(result);
   return result;
 };
 
@@ -32,6 +33,4 @@ const deleteSingleUserFromDb = async (userId: number) => {
     getAllUsersFromDb,
     getSingleUserFromDb,
     deleteSingleUserFromDb,
-
-    
   }

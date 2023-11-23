@@ -55,6 +55,13 @@ userSchema.pre('save', async function (next) {
     next();
     
   });
+
+
+  //query middleware
+userSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+  });
   
 
 
