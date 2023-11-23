@@ -1,9 +1,9 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TAddress, TFullName, TUser } from './user.interface';
 
 const fullNameSchema = new Schema<TFullName>({
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true}
+    firstName: {type: String, required: [true, 'firstName is required']},
+    lastName: {type: String, required: [true, 'lastName is required']}
 })
 
 const addressSchema = new Schema<TAddress>({
