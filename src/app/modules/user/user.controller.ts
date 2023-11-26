@@ -132,7 +132,7 @@ const putOrder = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
-      data: result,
+      data: null,
     });
   } catch (error) {
     res.status(404).json({
@@ -146,6 +146,26 @@ const putOrder = async (req: Request, res: Response) => {
   }
 };
 
+//get all orders
+const getAllOrders = async(req : Request, res : Response) =>{
+  try{
+      const result = await userServices.getAllOrdersFromDb()
+      res.status(200).json({
+          success: true,
+          message: "Orders fetched successfully!",
+          data: result
+      })
+  }catch (error) {
+      res.status(200).json({
+        success: false,
+        message: 'Orders not found',
+        error: {
+          code: 404,
+          description: 'Orders not found!',
+        },
+      });
+    }
+}
 
 
 export const userControllers = {
@@ -155,4 +175,5 @@ export const userControllers = {
   deleteSingleUser,
   updateSingleUser,
   putOrder,
+  getAllOrders,
 };

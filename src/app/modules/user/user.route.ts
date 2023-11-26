@@ -11,6 +11,7 @@ router.put('/:userId', userControllers.updateSingleUser)
 
 // order 
 router.put('/:userId/orders', userControllers.putOrder)
+router.get('/:userId/orders', userControllers.getAllOrders)
 
 
 export const userRoutes = router

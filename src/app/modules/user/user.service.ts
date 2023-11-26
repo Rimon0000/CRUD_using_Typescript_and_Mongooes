@@ -43,10 +43,17 @@ const putOrderIntoDb = async (userId: number, orderData: any) => {
   const result = await User.findOneAndUpdate(
     { userId },
     { $push: { orders: orderData } },
-    { new: true },
+    { new: true }
   );
   return result;
 };
+
+//get all order
+const getAllOrdersFromDb = async () => {
+  const result = await User.find().select({orders: 1, _id: 0});
+  return result;
+};
+
 
 export const userServices = {
   createUserIntoDb,
@@ -55,4 +62,5 @@ export const userServices = {
   deleteSingleUserFromDb,
   updateSingleUserFromDb,
   putOrderIntoDb,
+  getAllOrdersFromDb,
 };
