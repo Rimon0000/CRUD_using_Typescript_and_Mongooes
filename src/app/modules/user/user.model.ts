@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TUser } from './user.interface';
+import { TAddress, TFullName, TOrders, TUser } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
@@ -12,6 +12,12 @@ const addressSchema = new Schema<TAddress>({
     street: {type: String, required: [true, 'street is required']},
     city: {type: String, required: [true, 'city is required']},
     country: {type: String, required: [true, 'country is required']}
+})
+
+const ordersSchema = new Schema<TOrders>({
+    productName: {type: String},
+    price: {type: Number},
+    quantity: {type: Number}
 })
 
 
@@ -30,7 +36,8 @@ const userSchema = new Schema<TUser>({
     },
     isActive: {type: Boolean},
     hobbies: [{ type: String }, { type: String }],
-    address: {type: addressSchema,  required: [true, 'Address is required']}
+    address: {type: addressSchema,  required: [true, 'Address is required']},
+    orders: { type: [ordersSchema] },
 })
 
 // //creating a custom static method
@@ -53,15 +60,9 @@ userSchema.pre('save', async function (next) {
     //remove password
     user.$set('password', undefined);
     next();
-    
   });
 
 
-  //query middleware
-userSchema.pre('find', function (next) {
-    this.find({ isDeleted: { $ne: true } });
-    next();
-  });
   
 
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
 import UserValidationSchema from './user.validation';
+import { User } from './user.model';
 
 
 
@@ -80,7 +81,6 @@ const deleteSingleUser = async(req: Request, res: Response) =>{
           message: "User deleted successfully!",
           data: result
       })
-      
   } catch (error) {
       res.status(200).json({
         success: false,
@@ -119,8 +119,33 @@ const updateSingleUser = async (req: Request, res: Response) => {
       },
     });
   }
-  
 };
+
+
+//put/create order 
+const putOrder = async (req: Request, res: Response) => {
+  try {
+    const orderData = req.body;
+    const userId = req.params.userId
+
+    const result = await userServices.putOrderIntoDb(userId, orderData);
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: 'Order not found',
+      error: {
+        code: 404,
+        description: 'Order not found!',
+      },
+    });
+  }
+};
+
 
 
 export const userControllers = {
@@ -128,5 +153,6 @@ export const userControllers = {
   getAllUsers,
   getSingleUser,
   deleteSingleUser,
-  updateSingleUser
+  updateSingleUser,
+  putOrder,
 };
