@@ -57,12 +57,11 @@ userSchema.pre('save', async function (next) {
       user.password,
       Number(config.bcrypt_salt_rounds),
     );
-    //remove password
-    user.$set('password', undefined);
+    //remove orders
+    user.$set('orders', undefined);
     next();
   });
-
-
+  
   
 
 

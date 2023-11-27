@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
 import UserValidationSchema from './user.validation';
-import { User } from './user.model';
-
 
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const {user: userData} = req.body;
+    const  userData = req.body;
 
     //data validation using zod
     const zodParseData = UserValidationSchema.parse(userData)
@@ -23,8 +21,7 @@ const createUser = async (req: Request, res: Response) => {
         message:"something went wrong",
         error: error
     })
-}
-  
+} 
 };
 
 //get all user
@@ -96,8 +93,7 @@ const deleteSingleUser = async(req: Request, res: Response) =>{
 //update
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
-    const {user: userData} = req.body;
-
+    const userData = req.body;
     //data validation using zod
     const zodParseData = UserValidationSchema.parse(userData)
 

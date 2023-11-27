@@ -1,10 +1,11 @@
 import { TUser } from './user.interface';
 import { User } from './user.model';
-import { Types } from 'mongoose';
+import config from '../../config';
+import bcrypt from 'bcrypt';
 
 //create user
 const createUserIntoDb = async (userData: TUser) => {
-  const result = await User.create(userData);
+  const result = (await User.create(userData)).$set('password', undefined);
   return result;
 };
 
@@ -22,7 +23,7 @@ const getAllUsersFromDb = async () => {
 
 //get single user
 const getSingleUserFromDb = async (userId: number) => {
-  const result = await User.findOne({ userId });
+  const result = await User.findOne({ userId }).select({password: 0, orders: 0});
   return result;
 };
 
@@ -34,8 +35,16 @@ const deleteSingleUserFromDb = async (userId: number) => {
 
 //update single user
 const updateSingleUserFromDb = async (userId: number, userData: any) => {
-  const result = await User.updateOne({ userId }, userData);
-  return result;
+
+  //hashing password
+  if(userData.password){
+    userData.password = await bcrypt.hash(
+    userData.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  }
+  const result = await User.findOneAndUpdate({userId}, userData).select({_id: 0, password: 0, orders: 0 })
+  return result
 };
 
 
