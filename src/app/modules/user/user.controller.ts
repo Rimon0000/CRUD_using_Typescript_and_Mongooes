@@ -149,10 +149,33 @@ const putOrder = async (req: Request, res: Response) => {
 //get all orders
 const getAllOrders = async(req : Request, res : Response) =>{
   try{
-      const result = await userServices.getAllOrdersFromDb()
+      const id = req.params.userId
+      const result = await userServices.getAllOrdersFromDb(id)
       res.status(200).json({
           success: true,
           message: "Orders fetched successfully!",
+          data: result
+      })
+  }catch (error) {
+      res.status(200).json({
+        success: false,
+        message: 'Orders not found',
+        error: {
+          code: 404,
+          description: 'Orders not found!',
+        },
+      });
+    }
+}
+
+//get all orders and calculated total price
+const calculateAllOrdersPrice = async(req : Request, res : Response) =>{
+  try{
+    const id = req.params.userId
+      const result = await userServices.calculateOrdersPriceFromDb(id)
+      res.status(200).json({
+          success: true,
+          message: "Total price calculated successfully!",
           data: result
       })
   }catch (error) {
@@ -176,4 +199,5 @@ export const userControllers = {
   updateSingleUser,
   putOrder,
   getAllOrders,
+  calculateAllOrdersPrice
 };

@@ -1,5 +1,6 @@
 import { TUser } from './user.interface';
 import { User } from './user.model';
+import { Types } from 'mongoose';
 
 //create user
 const createUserIntoDb = async (userData: TUser) => {
@@ -48,11 +49,27 @@ const putOrderIntoDb = async (userId: number, orderData: any) => {
   return result;
 };
 
-//get all order
-const getAllOrdersFromDb = async () => {
-  const result = await User.find().select({orders: 1, _id: 0});
+//get all order for single user
+const getAllOrdersFromDb = async (userId: number) => {
+  const result = await User.findOne({userId}).select({orders: 1, _id: 0});
   return result;
 };
+
+//calculate total price of order for single user
+const calculateOrdersPriceFromDb = async (userId: number) => {
+  const user = await User.findOne({ userId });
+    if (!user) {
+      return 0;
+    }
+    //calculate
+    let totalPrice = 0;
+    user.orders.forEach(order => {
+      totalPrice = parseFloat((totalPrice + order.price * order.quantity).toFixed(2));
+    });
+
+    return {totalPrice};
+};
+
 
 
 export const userServices = {
@@ -63,4 +80,5 @@ export const userServices = {
   updateSingleUserFromDb,
   putOrderIntoDb,
   getAllOrdersFromDb,
+  calculateOrdersPriceFromDb
 };
