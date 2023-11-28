@@ -84,7 +84,7 @@ const deleteSingleUser = async(req: Request, res: Response) =>{
         message: 'User not found',
         error: {
           code: 404,
-          description: 'User not found!',
+          description: error.message || 'User not found!',
         },
       });
     }
@@ -111,7 +111,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
       message: 'User not found',
       error: {
         code: 404,
-        description: 'User not found!',
+        description: error.message || 'User not found!',
       },
     });
   }
@@ -136,13 +136,13 @@ const putOrder = async (req: Request, res: Response) => {
       message: 'Order not found',
       error: {
         code: 404,
-        description: 'Order not found!',
+        description: error.message || 'User not found!',
       },
     });
   }
 };
 
-//get all orders
+//get all orders for single user
 const getAllOrders = async(req : Request, res : Response) =>{
   try{
       const id = req.params.userId
@@ -158,7 +158,7 @@ const getAllOrders = async(req : Request, res : Response) =>{
         message: 'Orders not found',
         error: {
           code: 404,
-          description: 'Orders not found!',
+          description: error.message || 'User not found!',
         },
       });
     }
@@ -180,7 +180,7 @@ const calculateAllOrdersPrice = async(req : Request, res : Response) =>{
         message: 'Orders not found',
         error: {
           code: 404,
-          description: 'Orders not found!',
+          description: error.message || 'User not found!',
         },
       });
     }

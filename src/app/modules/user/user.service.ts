@@ -32,12 +32,18 @@ const getSingleUserFromDb = async (userId: number) => {
 
 //delete single user
 const deleteSingleUserFromDb = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
   const result = await User.deleteOne({ userId });
   return result;
 };
 
 //update single user
 const updateSingleUserFromDb = async (userId: number, userData: any) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
 
   //hashing password
   if(userData.password){
@@ -53,6 +59,9 @@ const updateSingleUserFromDb = async (userId: number, userData: any) => {
 
 //put order
 const putOrderIntoDb = async (userId: number, orderData: any) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
   const result = await User.findOneAndUpdate(
     { userId },
     { $push: { orders: orderData } },
@@ -63,12 +72,18 @@ const putOrderIntoDb = async (userId: number, orderData: any) => {
 
 //get all order for single user
 const getAllOrdersFromDb = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
   const result = await User.findOne({userId}).select({orders: 1, _id: 0});
   return result;
 };
 
 //calculate total price of order for single user
 const calculateOrdersPriceFromDb = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
   const user = await User.findOne({ userId });
     if (!user) {
       return 0;
