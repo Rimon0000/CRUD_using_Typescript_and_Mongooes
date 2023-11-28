@@ -1,3 +1,4 @@
+import { Model } from "mongoose";
 
 export type TFullName = {
     firstName: string;
@@ -30,7 +31,7 @@ export type TUser = {
 }
 
 
-// //static
-// export interface UserModel extends Model<TUser> {
-//     getUser(userId: number): Promise<TUser | null>
-//   }
+//for creating static
+export interface UserModel extends Model<TUser> {
+    isUserExists(userId: number): Promise<TUser | null>;
+  }

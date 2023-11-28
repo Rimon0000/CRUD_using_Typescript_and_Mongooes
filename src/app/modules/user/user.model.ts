@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TOrders, TUser } from './user.interface';
+import { TAddress, TFullName, TOrders, TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
@@ -21,7 +21,7 @@ const ordersSchema = new Schema<TOrders>({
 })
 
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TUser, UserModel>({
     userId: {type: Number, unique: true},
     username: {type: String, unique: true, required: [true, 'username is required']},
     password: {type: String, required: [true, 'password is required']},
@@ -40,11 +40,11 @@ const userSchema = new Schema<TUser>({
     orders: { type: [ordersSchema] },
 })
 
-// //creating a custom static method
-// userSchema.statics.getUser = async function (userId: string) {
-//     const gettingUser = await User.findOne({ userId: userId });
-//     return gettingUser;
-//   };
+  //creating a custom static method
+  userSchema.statics.isUserExists = async function (userId: number) {
+    const existingUser = await User.findOne({ userId });
+    return existingUser;
+  };
 
 
 //pre save middleware/ hook: will work on create(), save()
@@ -61,10 +61,7 @@ userSchema.pre('save', async function (next) {
     user.$set('orders', undefined);
     next();
   });
-  
-  
-
 
 
 //creating model
-export const User = model <TUser>('User', userSchema)
+export const User = model <TUser, UserModel>('User', userSchema)

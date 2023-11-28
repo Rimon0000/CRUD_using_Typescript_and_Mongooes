@@ -62,7 +62,7 @@ const getSingleUser = async(req: Request, res: Response) =>{
           message: 'User not found',
           error: {
             code: 404,
-            description: 'User not found!',
+            description: error.message || 'User not found!',
           },
         });
       }
@@ -76,7 +76,7 @@ const deleteSingleUser = async(req: Request, res: Response) =>{
       res.status(200).json({
           success: true,
           message: "User deleted successfully!",
-          data: result
+          data: null
       })
   } catch (error) {
       res.status(200).json({

@@ -23,8 +23,11 @@ const getAllUsersFromDb = async () => {
 
 //get single user
 const getSingleUserFromDb = async (userId: number) => {
+  if (!(await User.isUserExists(userId))) {
+    throw new Error('User does not Exist');
+  }
   const result = await User.findOne({ userId }).select({password: 0, orders: 0});
-  return result;
+    return result;
 };
 
 //delete single user
